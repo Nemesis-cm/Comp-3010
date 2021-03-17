@@ -7,9 +7,13 @@ type exp =
   | Plus of exp * exp
   | Mult of exp * exp
 
+  (* Exception is implemented *)
+
+  exception Eval_error
+
   let rec string_of_exp (e : exp) = match e with
 
-  (*Methods to evaluate our test expressions*)
+  (* Our methods to help compute our given test statements*)
 
   | IsZero(expression) ->
   "(isZero" ^ string_of_exp expression ^ ")"
@@ -27,34 +31,64 @@ type exp =
 
   | Num x -> "(Num " ^ string_of_int x ^ ")";;
 
-  let print_expr e =
-    print_endline ( string_of_exp e);;
 
-  (* List of print statements to print our tests *)
+let rec eval(e: exp) = match e with
 
-  print_expr (Num 3);;
-  print_expr (True);;
-  print_expr (False);;
-  print_expr (Plus(Num 3, Num 2));;
-  print_expr (Mult (Num 3, Num 2));;
-  print_expr (Plus(Num 3, Plus (Num 3, Mult(Num 2, Plus(Num 3, Num 2)))));;
-  print_expr (If (True, Num 3, Num 5));;
+|Num x -> Num x
+|True -> True
+|False -> False
+|Plus(Num x, Num y) ->
+let n1 = x + y in Num n1
 
-  print_expr (If(False, Plus (Num 3, Num 2), Plus(Num 5, Num 1)));;
+(* Methods to account for all our tests*)
 
-  print_expr (If( Plus(False, True), Plus(Num 3, False), Mult (Num 3, Num 1)));;
+            | Plus(e1,Num x) ->
+            if e1 = True || e1 = False then raise Eval_error else
+            let e1'= eval e in eval(Plus(e1', Num x))
+            
+            | Plus (Num x, e1) ->
+            if e1 = True || e1 = False then raise Eval_error else
+            let e1' = eval e1 in eval(Plus(Num x, e1'))
+            
+            | Plus (e1,e2) ->
+            if e1 = True || e1 = False || e2 = True || e2 = False then raise Eval_error else
+            let e1' = eval e1 in eval(Plus(e1',e2))
+            
+            | Mult (Num x, Num y) ->
+            let n1 = x * y in Num n1
+            
+            | Mult (e1, Num x) ->
+            if e1 = True || e1 = False then raise Eval_error else
+            let e1' = eval e1 in eval(Mult(e1', Num x))
+            
+            | Mult (Num x, e1) ->
+            if e1 = True || e1 = False then raise Eval_error else
+            let e1' = eval e1 in eval(Mult(Num x, e1'))
+            
+            | Mult (e1,e2) ->
+            if e1 = True || e1 = False || e2 = True || e2 = False then raise Eval_error else
+            let e1' = eval e1 in eval(Mult (e1',e2))
+            
+            | IsZero(Num x) ->
+            if x = 0 then True
+            else if x != 0 then False
+            else raise Eval_error
+            
+            | IsZero(True) ->
+            raise Eval_error
+            
+            | IsZero(False) ->
+            raise Eval_error
 
-  print_expr (If (IsZero (Num 1), Plus (Num 3, Num 2), Plus (Num 5, Num 1)));;
+        | IsZero(e1) -> let e1' = eval e1 in eval(IsZero(e1'))
+        | If(True,e1,e2) -> eval e1
+        | If(False,e1,e2) -> eval e2
+        | If(e,e1,e2) -> match e with
+            |Num x -> raise Eval_error
+            | _ -> let e' = eval e in eval(If(e', e1, e2));;
 
-  print_expr (IsZero(Mult (Num 3, Num 5)));;
+(* Here we print our statements*)
 
-  print_expr (IsZero( If( IsZero(Num 1), Plus (Num 3, Num 5), Plus (Num 5, Num 1))));;
+let print_expr e = print_endline(string_of_exp e);;
 
-  print_expr (Plus (Num 3, If (IsZero (Num 1), Plus (Num 3, Num 5), Plus (Num 5, Num 1))));;
-
-  print_expr (Plus (Num 3, Mult (If (IsZero(Num 1), Plus (Num 3, Num 5), Plus (Num 5, Num 1)), IsZero(True))));;
-
-  print_expr (If (If (True, True, False), Plus (Num 3, Num 2), Plus (Num 5, Num 1)));;
-
-  print_expr (If (True, If (IsZero( Mult (Num 3, Num 5)), Plus (Num 3, Num 2),
-   Plus (Num 5, Num 1)), If (True, Mult (Num 3, Num 2), Mult (Num 2, Plus (Num 3, Num 2)))));;
+let print_eval e = print_endline(string_of_exp(eval e));;
