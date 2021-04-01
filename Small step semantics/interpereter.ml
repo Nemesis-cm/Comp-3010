@@ -25,7 +25,7 @@ let rec step(e: exp) = match e with
         if e1 = True || e1 = False then raise Eval_error else
         let e1' = step e1 in Plus(Num x, e1')
         
-        |Plus(e1,e2) ->
+        | Plus(e1,e2) ->
         if e1 = True || e1 = False || e2 = True || e2 = False then raise Eval_error else
         let e1' = step e1 in Plus(e1', e2)
 
@@ -44,7 +44,7 @@ let rec step(e: exp) = match e with
         if e1 = True || e1 = False || e2 = True || e2 = False then raise Eval_error else
         let e1' = step e1 in Mult(e1', e2)
 
-        |IsZero(Num x) ->
+        | IsZero(Num x) ->
         if x = 0 then True
         else if x != 0 then False
         else raise Eval_error
@@ -72,10 +72,10 @@ let rec step(e: exp) = match e with
       | IsZero (expression) ->
       "(IsZero)" ^ string_of_exp expression ^ ")"
 
-      |Plus (left, right) ->
+      | Plus (left, right) ->
       "(" ^ string_of_exp left ^ " + " ^ string_of_exp right ^ ")"
 
-      |Mult (left, right) ->
+      | Mult (left, right) ->
       "(" ^ string_of_exp left ^ " * " ^ string_of_exp right ^ ")"
 
       | If (left, center, right) ->
@@ -84,7 +84,7 @@ let rec step(e: exp) = match e with
 
       | True -> "True"
       | False -> "False"
-      |Num x -> "(Num)" ^ string_of_int x ^ ")";;
+      | Num x -> "(Num)" ^ string_of_int x ^ ")";;
 
 let print_multi_step e =
 print_endline(string_of_exp(multi_step e)) ;;
