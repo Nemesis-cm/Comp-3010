@@ -34,10 +34,10 @@ type exp =
 
 let rec eval(e: exp) = match e with
 
-|Num x -> Num x
-|True -> True
-|False -> False
-|Plus(Num x, Num y) ->
+| Num x -> Num x
+| True -> True
+| False -> False
+| Plus(Num x, Num y) ->
 let n1 = x + y in Num n1
 
 (* Methods to account for all our tests*)
