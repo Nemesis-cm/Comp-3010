@@ -25,7 +25,7 @@ type exp =
   | True -> "true"
   | False -> "false"
 
-  | Num x -> "(Num " ^ string_of_int x ^ ")";;
+  | Num x -> string_of_int x;;
 
   let print_expr e =
     print_endline ( string_of_exp e);;
