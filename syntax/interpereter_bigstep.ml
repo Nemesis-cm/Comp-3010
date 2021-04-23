@@ -12,7 +12,7 @@ type exp =
   (*Methods to evaluate our test expressions*)
 
   | IsZero(expression) ->
-  "(isZero" ^ string_of_exp expression ^ ")"
+  "(isZero " ^ string_of_exp expression ^ ")"
 
   | Plus(left,right) ->
   "(" ^ string_of_exp left ^ " + " ^ string_of_exp right ^")"
