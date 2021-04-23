@@ -21,7 +21,7 @@ type exp =
   "(" ^ string_of_exp left ^ " * " ^ string_of_exp right ^")"
 
   | If (left,center,right) ->
-  "if" ^ string_of_exp left ^ "then" ^ string_of_exp center ^ " else " ^ string_of_exp right
+  "if " ^ string_of_exp left ^ "then" ^ string_of_exp center ^ " else " ^ string_of_exp right
   | True -> "true"
   | False -> "false"
 
