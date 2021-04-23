@@ -114,7 +114,7 @@ type typ =
     | Let(x, e1, e2) ->  env, (Apply(Lambda(x, e2), e1))
     | Apply(Lambda(var, body), True) -> ((var, True)::env), body
     | Apply(Lambda(var, body), False) -> ((var, False)::env), body
-    | Apply(Lambda(var, body), Num i) -> ((var, Num x)::env), body
+    | Apply(Lambda(var, body), Num i) -> ((var, Num i)::env), body
     | Apply(Lambda(var, body), Lambda(v, b)) -> ((var, Lambda(v, b))::env), body
     | Apply(Lambda(var, body), e2) -> let p = step env e2 in ((var, e2)::env), Apply(Lambda(var, body), snd p)
     | Apply(e1, e2) ->let p = step env e1 in env, Apply(snd p, e2)
