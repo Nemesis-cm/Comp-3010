@@ -84,7 +84,7 @@ let rec step(e: exp) = match e with
 
       | True -> "True"
       | False -> "False"
-      | Num x -> "(Num)" ^ string_of_int x ^ ")";;
+      | Num x -> "(Num) " ^ string_of_int x ^ ")";;
 
 let print_multi_step e =
 print_endline(string_of_exp(multi_step e)) ;;
