@@ -119,7 +119,7 @@ let rec type_check(e : exp) = match e with
 let rec string_of_exp (e: exp) = match e with
 
         |IsZero(expression) ->
-        "(IsZero)" ^ string_of_exp expression ^ ")"
+        "(IsZero) " ^ string_of_exp expression ^ ")"
 
         |Plus(left, right) ->
         "(" ^ string_of_exp left ^ " + " ^ string_of_exp right ^ ")"
@@ -128,7 +128,7 @@ let rec string_of_exp (e: exp) = match e with
         "(" ^ string_of_exp left ^ " * " ^ string_of_exp right ^ ")"
 
         |If (left,center,right) ->
-        "If" ^ string_of_exp left ^ " then " ^ string_of_exp center ^ " else " ^ string_of_exp right
+        "If " ^ string_of_exp left ^ " then " ^ string_of_exp center ^ " else " ^ string_of_exp right
 
         | True -> "True"
         | False -> "False"
