@@ -70,7 +70,7 @@ let rec step(e: exp) = match e with
       let rec string_of_exp (e : exp) = match e with
 
       | IsZero (expression) ->
-      "(IsZero)" ^ string_of_exp expression ^ ")"
+      "(IsZero) " ^ string_of_exp expression ^ ")"
 
       | Plus (left, right) ->
       "(" ^ string_of_exp left ^ " + " ^ string_of_exp right ^ ")"
