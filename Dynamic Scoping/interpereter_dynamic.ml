@@ -45,7 +45,7 @@ type typ =
     match e1 with
         
         
-            | Num n -> Num n
+            | Num i -> Num i
             | True -> True
             | False -> False
             | Plus(exp1,exp2) -> Plus(substitution exp1 x e2, substitution exp2 x e2)
@@ -75,46 +75,46 @@ type typ =
     | False -> raise Eval_error
     | Lambda(var, body) -> raise Eval_error
     
-    | Plus(Num x, Num y) ->
-      let n1 = x + y in env, Num n1
+    | Plus(Num i, Num j) ->
+      let n1 = i + j in env, Num n1
       
-    | Plus(e1, Num x) ->
+    | Plus(e1, Num i) ->
       if e1 = True || e1 = False then raise Eval_error else
-      let p = step env e1 in fst p, Plus(snd p, Num x)
+      let p = step env e1 in fst p, Plus(snd p, Num i)
       
-    | Plus(Num x, e1) ->
+    | Plus(Num i, e1) ->
       if e1 = True || e1 = False then raise Eval_error else
-      let p = step env e1 in fst p, Plus(Num x, snd p)
+      let p = step env e1 in fst p, Plus(Num i, snd p)
       
     | Plus(e1, e2) ->
       if e1 = True || e1 = False || e2 = True || e2 = False then raise Eval_error else
       let p = step env e1 in fst p, Plus(snd p, e2)
       
-    | Mult(Num x, Num y) ->
-      let n1 = x * y in env, Num n1
+    | Mult(Num i, Num j) ->
+      let n1 = i * j in env, Num n1
       
-    | Mult(e1, Num x) ->
+    | Mult(e1, Num i) ->
       if e1 = True || e1 = False then raise Eval_error else
-      let p = step env e1 in fst p, Mult(snd p, Num x)
+      let p = step env e1 in fst p, Mult(snd p, Num i)
       
-    | Mult(Num x, e1) ->
+    | Mult(Num i, e1) ->
       if e1 = True || e1 = False then raise Eval_error else
-      let p = step env e1 in fst p, Mult(Num x, snd p)
+      let p = step env e1 in fst p, Mult(Num i, snd p)
       
     | Mult(e1, e2) ->
       if e1 = True || e1 = False || e2 = True || e2 = False then raise Eval_error else
       let p = step env e1 in fst p, Mult(snd p, e2)
       
-    | IsZero(Num x) ->
-      if x = 0 then env, True
-      else if x != 0 then env, False
+    | IsZero(Num i) ->
+      if i = 0 then env, True
+      else if i != 0 then env, False
       else raise Eval_error
       
     | IsZero(True) -> raise Eval_error
     | Let(x, e1, e2) ->  env, (Apply(Lambda(x, e2), e1))
     | Apply(Lambda(var, body), True) -> ((var, True)::env), body
     | Apply(Lambda(var, body), False) -> ((var, False)::env), body
-    | Apply(Lambda(var, body), Num x) -> ((var, Num x)::env), body
+    | Apply(Lambda(var, body), Num i) -> ((var, Num x)::env), body
     | Apply(Lambda(var, body), Lambda(v, b)) -> ((var, Lambda(v, b))::env), body
     | Apply(Lambda(var, body), e2) -> let p = step env e2 in ((var, e2)::env), Apply(Lambda(var, body), snd p)
     | Apply(e1, e2) ->let p = step env e1 in env, Apply(snd p, e2)
